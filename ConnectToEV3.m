@@ -1,11 +1,13 @@
 file = matlab.desktop.editor.getActiveFilename;
 [filePath,fileName,fileExtension] = fileparts(file);
 ev3 = filePath + "\EV3";
+clearvars file filePath fileName fileExtension
 
 try
     brick.playTone(100, 500, 100);
     disp("Already connected!");
 catch ME
+    clearvars ME
     try
         disp("Connecting to simulation...");
         javaclasspath(ev3);
@@ -19,6 +21,7 @@ catch ME
         disp("Connected!");
         disp("Voltage: " + brick.GetBattVoltage());
     catch ME
-        disp("No simulation available. Ensure it's running.");
+        disp("No simulation available! Ensure it's running.");
+        clearvars ME
     end
 end
