@@ -7,7 +7,8 @@ try
     brick.playTone(100, 500, 100);
     disp("Already connected!");
 catch ME
-    clearvars ME
+    disp("No connection, attempting to create a new connection...");
+    clearvars ME brick
     try
         disp("Connecting to simulation...");
         javaclasspath(ev3);
