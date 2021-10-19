@@ -1,0 +1,44 @@
+state = 'checking';
+while(1)
+    switch state
+    case 'checking': % Checking State
+    wallToRight = CheckForWallToRight();
+    wallAhead = CheckForWallAhead();
+    if(wallToRight && wallAhead)
+    state = 'turnLeft';
+    end
+    if (~wallToRight)
+        state = 'turnRight';
+    end
+    if (wallToRight && ~wallAhead)
+    state = 'moveForward24';
+    end
+    case 'turnLeft': %Turn Left 90 degrees
+        TurnLeft(90);
+        state = 'checking';
+    case 'turnRight': % Turn Right degrees
+        TurnRight(90);
+        state = 'checking';
+    case 'moveForward24': % Move forward 24'/check for colors
+        switch MoveCheck()
+            case 'nothing': % Nothing found
+                state = 'checking';
+            case 'green': % If green, pickup
+                state = 'pickup';
+            case 'red': % If red, pause move forward 12'
+                state = 'pauseMove';
+            case 'yellow': % if yellow, drop off
+                state = 'dropOff';
+        end
+    case 'pickup': %Pick up
+        % Keyboard controls or automation TBD
+        state = 'checking';
+    case 'pauseMove': %Pause move forward 12'
+        % TODO Pause for 3 seconds
+        MoveForward(12);
+        state = 'checking';
+    case 'dropOff': %Dropping off
+        % TODO Drop passenger via claw, end loop with break
+        break
+    end
+end
