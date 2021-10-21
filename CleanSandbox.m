@@ -1,10 +1,21 @@
 % this file is for testing code in a clean environment.
-while(1)
-    k = waitforbuttonpress;
-    % 28 leftarrow
-    % 29 rightarrow
-    % 30 uparrow
-    % 31 downarrow
-    value = double(get(gcf,'CurrentCharacter'));
-    disp(value)
+
+InitKeyboard();
+while 1
+    pause(0.1)
+    switch key
+        case 'uparrow'
+            disp("up")
+        case 'downarrow'
+            disp("down")
+        case 'leftarrow'
+            disp("left")
+        case 'rightarrow'
+            disp("right")
+        case 0
+            disp("none")
+        case 'q'
+            break;
+    end
 end
+CloseKeyboard();
