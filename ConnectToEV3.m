@@ -10,11 +10,11 @@ catch ME
     disp("No connection, attempting to create a new connection...");
     clearvars ME brick
     try
-        disp("Connecting to simulation...");
+        disp("Creating java class path...");
         javaclasspath(ev3);
         disp("Loaded java class path...");
         
-        disp("Connecting via 127.0.0.1...");
+        disp("Connecting to simulation via 127.0.0.1...");
         brick = Brick('ioType','wifi','wfAddr','127.0.0.1','wfPort',5555,'wfSN','0016533dbaf5');
         brick.playTone(100, 600, 100);
         pause(1/10);
@@ -23,6 +23,7 @@ catch ME
         disp("Voltage: " + brick.GetBattVoltage());
     catch ME
         disp("No simulation available! Ensure it's running.");
+        disp(ME);
         clearvars ME
     end
 end
