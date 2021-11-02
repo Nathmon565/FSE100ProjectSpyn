@@ -1,1 +1,1 @@
-clearvars brick;
+clearvars brick isBluetooth;
