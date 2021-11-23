@@ -7,9 +7,9 @@ function Start(brick, hasChair)
     brick.StopAllMotors();
     brick.beep();
 end
-    
+
 function Shift(brick, drive)
-    if(drive)
+    if (drive)
         disp("Shifting to drive");
         brick.MoveMotor('D', -25);
     else
@@ -24,7 +24,7 @@ function TurnLeft(brick)
     disp("Turning left...");
     Shift(brick, false);
     brick.MoveMotorAngleRel('A', 70, -360 * 2.9, 'Brake');
-    while(brick.MotorBusy('A')); end
+    while (brick.MotorBusy('A')); end
     disp("Next!");
     Shift(brick, true);
 end
@@ -34,24 +34,24 @@ function TurnRight(brick)
     disp("Turning right...");
     Shift(brick, false);
     brick.MoveMotorAngleRel('A', 70, 360 * 3.15, 'Brake');
-    while(brick.MotorBusy('A')); end
+    while (brick.MotorBusy('A')); end
     Shift(brick, true);
     disp("Driving forward 1/2...");
     %brick.MoveMotorAngleRel('A', 70, 360 * 10.5, 'Brake');
     brick.MoveMotorAngleRel('A', 70, 360 * 12, 'Brake');
-    while(brick.MotorBusy('A')); end
+    while (brick.MotorBusy('A')); end
     disp("Next!");
-    
+
 end
 
 function TurnAround(brick)
     disp("Turning around...");
     Shift(brick, false);
     brick.MoveMotorAngleRel('A', 70, 360 * 6.3, 'Brake');
-    while(brick.MotorBusy('A')); end
+    while (brick.MotorBusy('A')); end
     disp("Next!");
     Shift(brick, true);
-   
+
 end
 
 % Drive forward 1 square; check for button press, red strip, wall
@@ -67,19 +67,19 @@ function DriveForward(brick, hasChair)
     pause(.55);
     seenStopSign = false;
     % while busy
-    while(true)
+    while (true)
         % if pressed
-        if(brick.TouchPressed(4) || brick.TouchPressed(3))
+        if (brick.TouchPressed(4) || brick.TouchPressed(3))
             disp("Hit wall!");
             % stop driving
             brick.StopMotor('A', 'Brake');
             BackUpTurnLeft(brick);
             break;
         end
-        
+
         % if red tape
         color = brick.ColorCode(2);
-        if(color == 5 && ~seenStopSign)
+        if (color == 5 && ~seenStopSign)
             disp("Red! Stop!");
             seenStopSign = true;
             % stop driving
@@ -87,8 +87,8 @@ function DriveForward(brick, hasChair)
             % wait at line
             pause(3);
             break;
-        elseif(color == 4 && hasChair) % yellow dropoff
-            if(yellowSafety > yellowThresh)
+        elseif (color == 4 && hasChair) % yellow dropoff
+            if (yellowSafety > yellowThresh)
                 brick.StopMotor('A', 'Brake');
                 disp("Yellow!");
                 DropOff(brick);
@@ -96,7 +96,7 @@ function DriveForward(brick, hasChair)
             else
                 yellowSafety = yellowSafety + 1;
             end
-        elseif(color == 3 && ~hasChair) % green pickup
+        elseif (color == 3 && ~hasChair) % green pickup
             disp("Green!");
             brick.StopMotor('A', 'Brake');
             ManualControl(brick);
@@ -105,22 +105,22 @@ function DriveForward(brick, hasChair)
         else
             yellowSafety = 0;
         end
-        
+
         % check for no wall
-        if(brick.UltrasonicDist(1) > 40)
+        if (brick.UltrasonicDist(1) > 40)
             disp("No wall!");
             brick.StopMotor('A', 'Brake');
             disp("Driving forward 1/2...");
             brick.MoveMotorAngleRel('A', 70, 360 * 9, 'Brake');
-            while(brick.MotorBusy('A')); end
+            while (brick.MotorBusy('A')); end
             disp("Turning right!");
             TurnRight(brick);
             break;
         end
-        
+
         clearvars color
     end
-    
+
     disp("Next!");
     DriveForward(brick, hasChair);
 end
@@ -129,7 +129,7 @@ function BackUpTurnLeft(brick)
     disp("Backing up!");
     % drive back
     brick.MoveMotorAngleRel('A', 70, -360 * 7, 'Brake');
-    while(brick.MotorBusy('A')); BackUpBeeping(brick); end
+    while (brick.MotorBusy('A')); BackUpBeeping(brick); end
     Shift(brick, false);
     disp("Next!");
     % turn left
@@ -148,9 +148,9 @@ end
 function DropOff(brick)
     TurnAround(brick);
     brick.MoveMotorAngleRel('A', 70, 360 * -5, 'Brake');
-    while(brick.MotorBusy('A')); BackUpBeeping(brick); end
+    while (brick.MotorBusy('A')); BackUpBeeping(brick); end
     brick.MoveMotorAngleAbs('C', 100, -1000);
-    while(brick.MotorBusy('C')); end
+    while (brick.MotorBusy('C')); end
 end
 
 function ManualControl(brick)
@@ -197,7 +197,7 @@ function ManualControl(brick)
                 break;
         end
         color = brick.ColorCode(2);
-        if(color == 5)
+        if (color == 5)
             %brick.beep();
         end
         if brick.TouchPressed(4)
