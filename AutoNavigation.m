@@ -111,6 +111,7 @@ end
 
 function BackUpTurnLeft(brick)
     disp("Backing up!");
+    Shift(brick, true);
     % drive back
     brick.MoveMotorAngleRel('A', 70, -360 * 7, 'Brake');
     while (brick.MotorBusy('A')); BackUpBeeping(brick); end
@@ -121,8 +122,8 @@ function BackUpTurnLeft(brick)
 end
 
 function BackUpBeeping(brick)
-    brick.beep();
-    pause(0.25);
+    brick.playTone(35, 1147, 600);
+    pause(0.9);
 end
 
 %brick.MoveMotorAngleAbs('C', 100, 0); sync - touching
