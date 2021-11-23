@@ -6,9 +6,9 @@ function Start(brick, hasChair)
     brick.StopAllMotors();
     brick.beep();
 end
-    
+
 function Shift(brick, drive)
-    if(drive)
+    if (drive)
         disp("Shifting to drive");
         brick.MoveMotor('D', -25);
     else
@@ -23,7 +23,7 @@ function TurnLeft(brick)
     disp("Turning left...");
     Shift(brick, false);
     brick.MoveMotorAngleRel('A', 70, -360 * 2.9, 'Brake');
-    while(brick.MotorBusy('A')); end
+    while (brick.MotorBusy('A')); end
     disp("Next!");
     Shift(brick, true);
 end
@@ -33,7 +33,7 @@ function TurnRight(brick)
     disp("Turning right...");
     Shift(brick, false);
     brick.MoveMotorAngleRel('A', 70, 360 * 3.15, 'Brake');
-    while(brick.MotorBusy('A')); end
+    while (brick.MotorBusy('A')); end
     disp("Next!");
     Shift(brick, true);
 end
@@ -42,10 +42,9 @@ function TurnAround(brick)
     disp("Turning around...");
     Shift(brick, false);
     brick.MoveMotorAngleRel('A', 70, 360 * 6.3, 'Brake');
-    while(brick.MotorBusy('A')); end
+    while (brick.MotorBusy('A')); end
     disp("Next!");
     Shift(brick, true);
-   
 end
 
 % Drive forward 1 square; check for button press, red strip, wall
@@ -59,19 +58,19 @@ function DriveForward(brick, hasChair)
     % drive forward 1 squrae
     brick.MoveMotorAngleRel('A', 70, 360 * 21, 'Brake');
     % while busy
-    while(brick.MotorBusy('A'))
+    while (brick.MotorBusy('A'))
         % if pressed
-        if(brick.TouchPressed(4) || brick.TouchPressed(3))
+        if (brick.TouchPressed(4) || brick.TouchPressed(3))
             disp("Hit wall!");
             % stop driving
             brick.StopMotor('A', 'Brake');
             BackUpTurnLeft(brick);
             break;
         end
-        
+
         % if red tape
         color = brick.ColorCode(2);
-        if(color == 5 && ~seenStopSign)
+        if (color == 5 && ~seenStopSign)
             disp("Red! Stop!");
             seenStopSign = true;
             % stop driving
@@ -81,14 +80,14 @@ function DriveForward(brick, hasChair)
             % drive one half more forward
             disp("Driving forward 1/2...");
             brick.MoveMotorAngleRel('A', 70, 360 * 10.5, 'Brake');
-        elseif(color == 3) % green dropoff
+        elseif (color == 3) % green dropoff
             brick.StopMotor('A', 'Brake');
             disp("Green!");
             DropOff(brick);
             return;
-        elseif(color == 4 && ~hasChair) % yellow pickup
+        elseif (color == 4 && ~hasChair) % yellow pickup
             disp("Yellow!");
-            if(yellowSafety > yellowThresh)
+            if (yellowSafety > yellowThresh)
                 brick.StopAllMotors();
                 ManualControl(brick);
                 hasChair = true;
@@ -98,12 +97,11 @@ function DriveForward(brick, hasChair)
         else
             yellowSafety = 0;
         end
-        
         clearvars color
     end
-    
+
     % check for no wall
-    if(brick.UltrasonicDist(1) > 30)
+    if (brick.UltrasonicDist(1) > 30)
         disp("No wall!");
         TurnRight(brick);
     end
@@ -115,7 +113,7 @@ function BackUpTurnLeft(brick)
     disp("Backing up!");
     % drive back
     brick.MoveMotorAngleRel('A', 70, -360 * 7, 'Brake');
-    while(brick.MotorBusy('A')); BackUpBeeping(brick); end
+    while (brick.MotorBusy('A')); BackUpBeeping(brick); end
     Shift(brick, false);
     disp("Next!");
     % turn left
@@ -134,7 +132,7 @@ end
 function DropOff(brick)
     TurnAround(brick);
     brick.MoveMotorAngleAbs('C', 100, -1000);
-    while(brick.MotorBusy('C')); end
+    while (brick.MotorBusy('C')); end
 end
 
 function ManualControl(brick)
@@ -173,16 +171,6 @@ function ManualControl(brick)
                 claw = -1;
             case 'q'
                 break;
-        end
-        color = brick.ColorCode(2);
-        if(color == 5)
-            %brick.beep();
-        end
-        if brick.TouchPressed(4)
-            %brick.beep();
-        end
-        if brick.UltrasonicDist(1) > 25
-            %brick.beep();
         end
         brick.MoveMotor('A', throttle * driveSpeed);
         brick.MoveMotor('D', shift * shiftSpeed * needClutch);
