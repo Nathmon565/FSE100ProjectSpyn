@@ -37,11 +37,10 @@ function TurnRight(brick)
     while (brick.MotorBusy('A')); end
     Shift(brick, true);
     disp("Driving forward 1/2...");
-    %brick.MoveMotorAngleRel('A', 70, 360 * 10.5, 'Brake');
-    brick.MoveMotorAngleRel('A', 70, 360 * 12, 'Brake');
+    brick.MoveMotorAngleRel('A', 70, 360 * 10.5, 'Brake');
+    %brick.MoveMotorAngleRel('A', 70, 360 * 12, 'Brake');
     while (brick.MotorBusy('A')); end
     disp("Next!");
-
 end
 
 function TurnAround(brick)
@@ -61,7 +60,7 @@ function DriveForward(brick, hasChair)
     yellowThresh = 5;
     Shift(brick, true);
     % drive forward continuously
-    brick.MoveMotor('A', 70);
+    brick.MoveMotor('A', 100);
     %brick.MoveMotorAngleRel('A', 70, 360 * 21, 'Brake');
     % whether a stop sign has been witnessed this drive
     pause(.55);
@@ -137,8 +136,8 @@ function BackUpTurnLeft(brick)
 end
 
 function BackUpBeeping(brick)
-    brick.beep();
-    pause(0.25);
+    brick.playTone(35, 1147, 600);
+    pause(0.9);
 end
 
 %brick.MoveMotorAngleAbs('C', 100, 0); sync - touching
